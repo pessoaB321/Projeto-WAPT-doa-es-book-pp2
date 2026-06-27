@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Doação de Livros</title>
+    <!-- Adicionando Bootstrap via CDN para o layout ficar bonito e organizado -->
+    <link href="https://jsdelivr.net" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <h2 class="mb-4 text-center">📖 Cadastrar Livro para Doação</h2>
+        
+        <!-- Formulário de Cadastro -->
+        <div class="card shadow-sm p-4 mb-5 bg-white rounded">
+            <form action="/livros/doar/add" method="POST">
+                <div class="mb-3">
+                    <label for="titulo" class="form-label fw-bold">Título do Livro</label>
+                    <input type="text" name="titulo" id="titulo" class="form-control" placeholder="Ex: O Alquimista" required>
+                </div>
+                <div class="mb-3">
+                    <label for="autor" class="form-label fw-bold">Autor</label>
+                    <input type="text" name="autor" id="autor" class="form-control" placeholder="Ex: Paulo Coelho" required>
+                </div>
+                <div class="mb-3">
+                    <label for="estadoConservacao" class="form-label fw-bold">Estado de Conservação</label>
+                    <select name="estadoConservacao" id="estadoConservacao" class="form-select" required>
+                        <option value="Novo">Novo</option>
+                        <option value="Muito Bom">Muito Bom</option>
+                        <option value="Regular/Gasto">Regular / Gasto</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 fw-bold">Salvar Doação</button>
+            </form>
+        </div>
+
+        <hr>
+
+        <!-- Listagem dos Livros Cadastrados -->
+        <h3 class="mt-4 mb-3">Livros Disponíveis</h3>
+        <div class="list-group shadow-sm">
+            {{#each livros}}
+                <div class="list-group-item d-flex justify-content-between align-items-center bg-white p-3">
+                    <div>
+                        <h5 class="mb-1 text-primary">{{this.titulo}}</h5>
+                        <p class="mb-0 text-muted">Autor: {{this.autor}}</p>
+                        <span class="badge bg-info text-dark mt-1">{{this.estadoConservacao}}</span>
+                    </div>
+                    <form action="/livros/doar/remove" method="POST" class="m-0">
+                        <input type="hidden" name="id" value="{{this.id}}">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">Remover</button>
+                    </form>
+                </div>
+            {{else}}
+                <div class="list-group-item text-center text-muted p-4">
+                    Nenhum livro cadastrado para doação ainda.
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</body>
+</html>
+
