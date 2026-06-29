@@ -3,59 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <title>Doação de Livros</title>
-    <!-- Adicionando Bootstrap via CDN para o layout ficar bonito e organizado -->
-    <link href="https://jsdelivr.net" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #d8bb8f;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 24px;
+            background-color: #f9f9f9;
+            border: 1px solid #000;
+            border-radius: 10px;
+            box-shadow: 4px 8px 20px 5px rgb(96, 69, 36);
+        }
+
+        h2, h3 {
+            color: #8b571c;
+        }
+
+        .card {
+            border: 1px solid #000;
+            padding: 16px;
+            border-radius: 8px;
+            background-color: #fff;
+            margin-bottom: 24px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #8b571c;
+        }
+
+        input, select {
+            padding: 8px;
+            border: 1px solid #8b571c;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 8px 10px;
+            cursor: pointer;
+            background: #8b571c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .book-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #000;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 12px;
+            background-color: #fff;
+        }
+
+        .book-title {
+            color: #8b571c;
+            margin: 0 0 4px 0;
+        }
+
+        .book-author {
+            margin: 0;
+            color: #666;
+        }
+
+        .badge {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 4px 8px;
+            background-color: #f2d7a1;
+            color: #7a4b12;
+            border-radius: 999px;
+            font-size: 12px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #666;
+            padding: 16px;
+            border: 1px dashed #8b571c;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+    </style>
 </head>
-<body class="bg-light">
-    <div class="container py-5">
-        <h2 class="mb-4 text-center">📖 Cadastrar Livro para Doação</h2>
-        
-        <!-- Formulário de Cadastro -->
-        <div class="card shadow-sm p-4 mb-5 bg-white rounded">
+<body>
+    <div class="container">
+        <a href="/" style="display:inline-block; margin-bottom:16px; text-decoration:none; color:#743513; font-weight:bold;">← Voltar para Home</a>
+        <h2>📖 Cadastrar Livro para Doação</h2>
+
+        <div class="card">
             <form action="/livros/doar/add" method="POST">
-                <div class="mb-3">
-                    <label for="titulo" class="form-label fw-bold">Título do Livro</label>
-                    <input type="text" name="titulo" id="titulo" class="form-control" placeholder="Ex: O Alquimista" required>
-                </div>
-                <div class="mb-3">
-                    <label for="autor" class="form-label fw-bold">Autor</label>
-                    <input type="text" name="autor" id="autor" class="form-control" placeholder="Ex: Paulo Coelho" required>
-                </div>
-                <div class="mb-3">
-                    <label for="estadoConservacao" class="form-label fw-bold">Estado de Conservação</label>
-                    <select name="estadoConservacao" id="estadoConservacao" class="form-select" required>
-                        <option value="Novo">Novo</option>
-                        <option value="Muito Bom">Muito Bom</option>
-                        <option value="Regular/Gasto">Regular / Gasto</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary w-100 fw-bold">Salvar Doação</button>
+                <label for="titulo">Título do Livro</label>
+                <input type="text" name="titulo" id="titulo" placeholder="Ex: O Alquimista" required>
+
+                <label for="autor">Autor</label>
+                <input type="text" name="autor" id="autor" placeholder="Ex: Paulo Coelho" required>
+
+                <label for="estadoConservacao">Estado de Conservação</label>
+                <select name="estadoConservacao" id="estadoConservacao" required>
+                    <option value="Novo">Novo</option>
+                    <option value="Muito Bom">Muito Bom</option>
+                    <option value="Regular/Gasto">Regular / Gasto</option>
+                </select>
+
+                <button type="submit">Salvar Doação</button>
             </form>
         </div>
 
-        <hr>
-
-        <!-- Listagem dos Livros Cadastrados -->
-        <h3 class="mt-4 mb-3">Livros Disponíveis</h3>
-        <div class="list-group shadow-sm">
-            {{#each livros}}
-                <div class="list-group-item d-flex justify-content-between align-items-center bg-white p-3">
-                    <div>
-                        <h5 class="mb-1 text-primary">{{this.titulo}}</h5>
-                        <p class="mb-0 text-muted">Autor: {{this.autor}}</p>
-                        <span class="badge bg-info text-dark mt-1">{{this.estadoConservacao}}</span>
-                    </div>
-                    <form action="/livros/doar/remove" method="POST" class="m-0">
-                        <input type="hidden" name="id" value="{{this.id}}">
-                        <button type="submit" class="btn btn-outline-danger btn-sm">Remover</button>
-                    </form>
+        <h3>Livros Disponíveis</h3>
+        {{#each livros}}
+            <div class="book-item">
+                <div>
+                    <h5 class="book-title">{{this.titulo}}</h5>
+                    <p class="book-author">Autor: {{this.autor}}</p>
+                    <span class="badge">{{this.estadoConservacao}}</span>
                 </div>
-            {{else}}
-                <div class="list-group-item text-center text-muted p-4">
-                    Nenhum livro cadastrado para doação ainda.
-                </div>
-            {{/each}}
-        </div>
+                <form action="/livros/doar/remove" method="POST" style="margin: 0;">
+                    <input type="hidden" name="id" value="{{this.id}}">
+                    <button type="submit">Remover</button>
+                </form>
+            </div>
+        {{else}}
+            <div class="empty-state">
+                Nenhum livro cadastrado para doação ainda.
+            </div>
+        {{/each}}
     </div>
 </body>
 </html>

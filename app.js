@@ -1,31 +1,43 @@
 const express = require("express");
-const { engine } = require("express-handlebars");
 const path = require("path");
+const methodOverride = require("method-override");
+const { engine } = require("express-handlebars");
 const livrosRotas = require("./routes/livrosrotas");
+const adminRotas = require("./routes/admin");
+const sequelize = require("./config/bd");
+const Administrador = require("./models/administrador.Model");
 
 const app = express();
 
-// Configuração do Handlebars sem exigir layout padrão
-app.engine("handlebars", engine({ defaultLayout: false }));
-app.set("view engine", "handlebars");
-app.set("views", path.join(__dirname, "views"));
-
-// Middleware para ler dados de formulários (POST)
+app.use(methodOverride("_method"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Servir arquivos estáticos (CSS) se houver
+app.engine("handlebars", engine({ defaultLayout: false }));
+app.set("view engine", "handlebars");
+app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 
-// Rota inicial redireciona para a página de doação
+app.use("/admin", adminRotas);
+
 app.get("/", (req, res) => {
-  res.redirect("/livros/doar");
+  res.render("livros/home");
 });
 
-// Usar as rotas de livros
 app.use("/livros", livrosRotas);
 
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
-});
+const PORT = process.env.PORT || 3000;
+
+async function conectarBD() {
+  try {
+    await sequelize.sync({ alter: true });
+    console.log("Conexão com o banco de dados estabelecida com sucesso!");
+    app.listen(PORT, () => {
+      console.log(`Servidor rodando em http://localhost:${PORT}`);
+    });
+  } catch (erro) {
+    console.error("Erro ao conectar:", erro);
+  }
+}
+
+conectarBD();
