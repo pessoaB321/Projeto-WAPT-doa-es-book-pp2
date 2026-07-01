@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doações Book</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #d8bb8f;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .welcome,
+        .options-panel {
+            background-color: #f9f9f9;
+            border: 1px solid #000;
+            border-radius: 10px;
+            box-shadow: 4px 8px 20px 5px rgb(96, 69, 36);
+            padding: 28px;
+        }
+
+        .welcome {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h1 {
+            color: #743513;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #6b4b2d;
+            margin-bottom: 0;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            width: 240px;
+            padding: 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #fff;
+            box-shadow: 2px 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .card.admin {
+            background: linear-gradient(135deg, #8b571c, #743513);
+        }
+
+        .card.user {
+            background: linear-gradient(135deg, #b47a3b, #8f5a21);
+            cursor: default;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: #fff;
+            margin: 0;
+        }
+
+        .footer-link {
+            display: inline-block;
+            margin-top: 24px;
+            color: #743513;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="welcome">
+            <h1>Bem-vindo ao Doações Book</h1>
+            <p>Escolha como deseja acessar o sistema.</p>
+        </div>
+
+        <div class="options-panel">
+            <div class="options">
+                <a class="card admin" href="/admin">
+                    <h2>Administrador</h2>
+                    <p>Acesse o painel de administração.</p>
+                </a>
+
+                <div class="card user">
+                    <h2>Usuário</h2>
+                    <p>Em breve.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
