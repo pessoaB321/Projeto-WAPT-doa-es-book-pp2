@@ -1,37 +1,44 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
+const Livro = require("../models/Livro"); // Importa o modelo do banco
 
-// Array na memória que simula o banco de dados
-let listadeLivros = [
-    { id: 1, titulo: "Exemplo de Livro", autor: "Autor Exemplo", estadoConservacao: "Muito Bom" }
-];
+// Sincroniza o modelo com o banco de dados antes de rodar as rotas
+const sequelize = require("../config/database");
+sequelize.sync();
 
-// Exibir formulário e listagem
-router.get('/doar', (req, res) => {
-    res.render('livros/doar', { livros: listadeLivros });
+// Exibir formulário e listagem puxando do banco de dados reais
+router.get("/doar", async (req, res) => {
+  try {
+    // Busca todos os livros cadastrados no banco
+    const livrosDoBanco = await Livro.findAll({ raw: true });
+
+    res.render("livros/doar", {
+      livros: livrosDoBanco,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Erro ao carregar os livros.");
+  }
 });
 
-// Cadastrar nova doação
-router.post('/doar/add', (req, res) => {
+// Cadastrar nova doação no banco de dados Sequelize
+router.post("/doar/add", async (req, res) => {
+  try {
     const { titulo, autor, estadoConservacao } = req.body;
-    
-    const novoLivro = {
-        id: Date.now(), // Gera um ID único simples usando o timestamp
-        titulo,
-        autor,
-        estadoConservacao
-    };
 
-    listadeLivros.push(novoLivro);
-    res.redirect('/livros/doar');
-});
+    // Cria o registro no banco real
+    await Livro.create({
+      titulo,
+      autor,
+      estadoConservacao,
+      usuarioId: 1, // Vínculo estático simulando o usuário logado
+    });
 
-// Remover doação
-router.post('/doar/remove', (req, res) => {
-    const { id } = req.body;
-    // Filtra a lista removendo o livro com o ID enviado
-    listadeLivros = listadeLivros.filter(livro => livro.id !== parseInt(id));
-    res.redirect('/livros/doar');
+    res.redirect("/doar");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Erro ao cadastrar o livro.");
+  }
 });
 
 module.exports = router;
