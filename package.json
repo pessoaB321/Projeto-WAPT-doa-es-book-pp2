@@ -1,23 +1,15 @@
 {
-  "name": "projeto-wapt-doa-es-book-pp2",
+  "name": "projeto-wapt-doa-es-book-pp2-p4-cadastro-doacao",
   "version": "1.0.0",
-  "description": "Projeto da disciplina PP2 para o sistema Doações Book da empresa wapt",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pessoaB321/Projeto-WAPT-doa-es-book-pp2.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/pessoaB321/Projeto-WAPT-doa-es-book-pp2/issues"
-  },
-  "homepage": "https://github.com/pessoaB321/Projeto-WAPT-doa-es-book-pp2#readme",
   "dependencies": {
     "express": "^5.2.1",
     "express-handlebars": "^8.0.2",

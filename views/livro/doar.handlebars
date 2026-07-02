@@ -1,0 +1,31 @@
+<div class="container">
+    <h2>Cadastrar Livro para Doação</h2>
+    
+    <form action="/doar/add" method="POST">
+        <div class="form-group">
+            <label>Título do Livro:</label>
+            <input type="text" name="titulo" required placeholder="Ex: O Alquimista">
+        </div>
+
+        <div class="form-group">
+            <label>Autor:</label>
+            <input type="text" name="autor" required placeholder="Ex: Paulo Coelho">
+        </div>
+
+        <div class="form-group">
+            <label>Estado de Conservação:</label>
+            <select name="estadoConservacao" required>
+                <option value="Novo">Novo</option>
+                <option value="Muito Bom">Muito Bom</option>
+                <option value="Usado / Marcas de Uso">Usado / Marcas de Uso</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Nome do Doador (Usuário):</label>
+            <input type="text" name="nomeDoador" required placeholder="Ex: Maria Silva">
+        </div>
+
+        <button type="submit" class="btn-submit">Cadastrar Doação</button>
+    </form>
+</div>
