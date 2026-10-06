@@ -30,7 +30,7 @@ const PORT = process.env.PORT || 3000;
 
 async function conectarBD() {
   try {
-    await sequelize.sync({ alter: true });
+    await sequelize.sync();
     console.log("Conexão com o banco de dados estabelecida com sucesso!");
     app.listen(PORT, () => {
       console.log(`Servidor rodando em http://localhost:${PORT}`);
