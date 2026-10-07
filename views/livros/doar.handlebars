@@ -70,6 +70,19 @@
             background-color: #fff;
         }
 
+        @media (max-width: 560px) {
+            .book-item {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .book-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
         .book-title {
             color: #8b571c;
             margin: 0 0 4px 0;
@@ -78,6 +91,23 @@
         .book-author {
             margin: 0;
             color: #666;
+        }
+
+        .book-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .receipt-link {
+            color: #743513;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .receipt-link:focus-visible {
+            outline: 2px solid #743513;
+            outline-offset: 3px;
         }
 
         .badge {
@@ -132,10 +162,13 @@
                     <p class="book-author">Autor: {{this.autor}}</p>
                     <span class="badge">{{this.estadoConservacao}}</span>
                 </div>
-                <form action="/livros/doar/remove" method="POST" style="margin: 0;">
-                    <input type="hidden" name="id" value="{{this.id}}">
-                    <button type="submit">Remover</button>
-                </form>
+                <div class="book-actions">
+                    <a class="receipt-link" href="/livros/doar/recibo/{{this.id}}">Ver recibo</a>
+                    <form action="/livros/doar/remove" method="POST" style="margin: 0;">
+                        <input type="hidden" name="id" value="{{this.id}}">
+                        <button type="submit">Remover</button>
+                    </form>
+                </div>
             </div>
         {{else}}
             <div class="empty-state">
@@ -145,4 +178,3 @@
     </div>
 </body>
 </html>
-
