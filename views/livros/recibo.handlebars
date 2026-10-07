@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recibo da doação | Doações Book</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --page: #d8bb8f;
+            --surface: #fffaf2;
+            --surface-border: #d7c3a5;
+            --ink: #3f2a19;
+            --muted: #76583b;
+            --brand: #743513;
+            --accent: #e1bd7d;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
+            background: var(--page);
+            color: var(--ink);
+            font-family: Arial, sans-serif;
+        }
+
+        .receipt {
+            width: min(100%, 620px);
+            margin: 0 auto;
+            padding: 36px;
+            border: 1px solid var(--surface-border);
+            border-top: 8px solid var(--brand);
+            border-radius: 10px;
+            background: var(--surface);
+            box-shadow: 0 14px 34px rgba(96, 69, 36, 0.16);
+        }
+
+        .eyebrow {
+            margin: 0 0 8px;
+            color: var(--brand);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(28px, 6vw, 38px);
+        }
+
+        .confirmation {
+            margin: 12px 0 28px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .receipt-number {
+            padding: 14px 0;
+            border-top: 1px dashed var(--surface-border);
+            border-bottom: 1px dashed var(--surface-border);
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .status-panel {
+            margin: 24px 0;
+            padding: 18px;
+            border: 1px solid var(--surface-border);
+            border-radius: 8px;
+            background: #f7edda;
+        }
+
+        .status-panel h2 {
+            margin: 0 0 10px;
+            color: var(--brand);
+            font-size: 18px;
+        }
+
+        .status-value {
+            margin: 0;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .status-note {
+            margin: 10px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        dl {
+            margin: 8px 0 28px;
+        }
+
+        .detail {
+            display: grid;
+            grid-template-columns: minmax(130px, 0.7fr) 1.3fr;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--surface-border);
+        }
+
+        dt {
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        dd {
+            margin: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .actions a,
+        .actions button {
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 16px;
+            border: 1px solid var(--brand);
+            border-radius: 5px;
+            background: var(--brand);
+            color: #fffaf2;
+            font: inherit;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .actions .secondary {
+            background: transparent;
+            color: var(--brand);
+        }
+
+        .actions button:disabled {
+            cursor: not-allowed;
+            opacity: 0.65;
+        }
+
+        .actions a:focus-visible,
+        .actions button:focus-visible {
+            outline: 3px solid var(--brand);
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 20px 12px;
+            }
+
+            .receipt {
+                padding: 24px 20px;
+            }
+
+            .detail {
+                grid-template-columns: 1fr;
+                gap: 6px;
+            }
+        }
+
+        @media print {
+            body {
+                min-height: auto;
+                padding: 0;
+                background: #fff;
+            }
+
+            .receipt {
+                width: 100%;
+                border: 1px solid #999;
+                border-top: 6px solid var(--brand);
+                box-shadow: none;
+            }
+
+            .actions {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="receipt" aria-labelledby="receipt-title">
+        <p class="eyebrow">Doações Book</p>
+        <h1 id="receipt-title">Recibo de doação</h1>
+        <p class="confirmation">Agradecemos sua generosidade. Os dados do livro doado estão registrados abaixo.</p>
+
+        <p class="receipt-number"><strong>Número do recibo:</strong> #{{livro.id}}</p>
+
+        <section class="status-panel" aria-labelledby="status-title">
+            <h2 id="status-title">Acompanhamento da análise</h2>
+            <p class="status-value" id="donation-status" aria-live="polite">Aguardando análise</p>
+            <p class="status-note" id="status-message">Demonstração local: este status fica salvo somente neste navegador e não representa uma atualização feita pela equipe.</p>
+        </section>
+
+        <dl>
+            <div class="detail">
+                <dt>Livro</dt>
+                <dd>{{livro.titulo}}</dd>
+            </div>
+            <div class="detail">
+                <dt>Autor(a)</dt>
+                <dd>{{livro.autor}}</dd>
+            </div>
+            <div class="detail">
+                <dt>Estado de conservação</dt>
+                <dd>{{livro.estadoConservacao}}</dd>
+            </div>
+            <div class="detail">
+                <dt>Data da doação</dt>
+                <dd>{{livro.dataDoacao}}</dd>
+            </div>
+        </dl>
+
+        <div class="actions">
+            <button type="button" id="toggle-analysis-status">Simular entrada em análise</button>
+            <button type="button" onclick="window.print()">Imprimir recibo</button>
+            <a class="secondary" href="/livros/doar">Voltar aos livros</a>
+        </div>
+    </main>
+    <script>
+        const statusStorageKey = `doacoes-book-status-{{livro.id}}`;
+        const statusLabel = document.getElementById('donation-status');
+        const statusMessage = document.getElementById('status-message');
+        const statusButton = document.getElementById('toggle-analysis-status');
+
+        function updateAnalysisStatus(isInAnalysis) {
+            statusLabel.textContent = isInAnalysis ? 'Em análise' : 'Aguardando análise';
+            statusButton.textContent = isInAnalysis
+                ? 'Simular retorno para aguardando análise'
+                : 'Simular entrada em análise';
+        }
+
+        try {
+            const savedStatus = localStorage.getItem(statusStorageKey);
+
+            if (savedStatus && savedStatus !== 'aguardando' && savedStatus !== 'em-analise') {
+                throw new Error('Status local inválido.');
+            }
+
+            updateAnalysisStatus(savedStatus === 'em-analise');
+
+            statusButton.addEventListener('click', () => {
+                const isInAnalysis = statusLabel.textContent !== 'Em análise';
+
+                try {
+                    localStorage.setItem(statusStorageKey, isInAnalysis ? 'em-analise' : 'aguardando');
+                    updateAnalysisStatus(isInAnalysis);
+                } catch (error) {
+                    statusLabel.textContent = 'Status local indisponível';
+                    statusMessage.textContent = 'Não foi possível salvar o status neste navegador. Verifique as configurações de armazenamento.';
+                    statusButton.disabled = true;
+                }
+            });
+        } catch (error) {
+            statusLabel.textContent = 'Status local indisponível';
+            statusMessage.textContent = 'Não foi possível acessar o armazenamento deste navegador. O status demonstrativo não pode ser consultado ou alterado.';
+            statusButton.disabled = true;
+        }
+    </script>
+</body>
+</html>
