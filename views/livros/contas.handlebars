@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contas</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #d8bb8f; color: #3f2a19; }
+        .card, .search-box { border: 1px solid #000; padding: 16px; border-radius: 8px; margin: 16px 0; background-color: #f9f9f9; box-shadow: 4px 8px 20px 5px rgb(96, 69, 36); }
+        .search-box { background-color: #743513; }
+        .search-box input { width: min(70%, 360px); }
+        input { padding: 8px; margin-right: 8px; }
+        a { display: inline-block; margin: 0 8px 8px 0; text-decoration: none; color: #743513; }
+        button { padding: 8px 10px; cursor: pointer; background: #8b571c; color: white; border: none; border-radius: 4px; }
+        .delete-btn { background: #743513; }
+        .inline { display: inline; }
+        .reset-link { padding: 8px 10px; background: white; border-radius: 4px; font-weight: bold; }
+        .empty-state { padding: 16px; background: #fff; border: 1px dashed #8b571c; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <a href="/" style="font-weight:bold">← Voltar para Home</a>
+    <h1>Contas</h1>
+    <a href="/contas/novo">Cadastrar nova conta</a>
+
+    <div class="search-box">
+        <form method="GET" action="/contas">
+            <input type="text" name="busca" placeholder="Buscar por nome ou e-mail" value="{{termo}}">
+            <button type="submit">Procurar</button>
+            {{#if termo}}
+                <a class="reset-link" href="/contas">Limpar</a>
+            {{/if}}
+        </form>
+    </div>
+
+    {{#if contas.length}}
+        {{#each contas}}
+            <div class="card">
+                <strong>{{this.nome}}</strong>
+                <p>E-mail: {{this.email}}</p>
+                <a href="/contas/editar/{{this.id}}">Editar</a>
+                <form class="inline" action="/contas/delete" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir esta conta?');">
+                    <input type="hidden" name="id" value="{{this.id}}">
+                    <button class="delete-btn" type="submit">Excluir</button>
+                </form>
+            </div>
+        {{/each}}
+    {{else}}
+        <p class="empty-state">Nenhuma conta encontrada.</p>
+    {{/if}}
+</body>
+</html>

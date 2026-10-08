@@ -4,8 +4,8 @@ const methodOverride = require("method-override");
 const { engine } = require("express-handlebars");
 const livrosRotas = require("./routes/livrosrotas");
 const adminRotas = require("./routes/admin");
+const contasRotas = require("./routes/contas");
 const sequelize = require("./config/bd");
-const Administrador = require("./models/administrador.Model");
 
 const app = express();
 
@@ -19,6 +19,7 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/admin", adminRotas);
+app.use("/contas", contasRotas);
 
 app.get("/", (req, res) => {
   res.render("livros/home");
@@ -40,4 +41,8 @@ async function conectarBD() {
   }
 }
 
-conectarBD();
+if (require.main === module) {
+  conectarBD();
+}
+
+module.exports = { app, conectarBD };
